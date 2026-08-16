@@ -57,11 +57,7 @@ jobs:
           echo "sync-vi-keys result: $RESULT"
           if ! git diff --quiet src/i18n/locales/vi.json; then
             git add src/i18n/locales/vi.json
-            git commit -m "chore(i18n): sync vi.json structure with upstream en.json
-
-$RESULT (added/removed keys, tiếng Anh giữ tạm chờ dịch)
-
-Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
+            git commit -m "chore(i18n): sync vi.json structure with upstream en.json" -m "sync-vi-keys: $RESULT (added/removed keys, tieng Anh giu tam cho dich)" -m "Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
           fi
 
           git push origin main
