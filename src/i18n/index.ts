@@ -20,7 +20,12 @@ i18n.use(initReactI18next).init({
     vi: { translation: vi },
   },
   lng: getInitialLanguage(),
-  fallbackLng: 'zh-CN',
+  // Missing keys for Vietnamese fall back to English instead of zh-CN,
+  // so newly added upstream keys stay readable until they are translated.
+  fallbackLng: {
+    vi: ['en', 'zh-CN'],
+    default: ['zh-CN'],
+  },
   interpolation: {
     escapeValue: false, // React 已经转义
   },

@@ -1,0 +1,67 @@
+name: Sync upstream
+
+on:
+  schedule:
+    # Hàng ngày lúc 03:40 UTC — kéo tính năng mới từ upstream về fork
+    - cron: '40 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Merge upstream/main và đồng bộ vi.json
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "vi-fork-sync"
+          git config user.email "vi-fork-sync@users.noreply.github.com"
+          git remote add upstream https://github.com/router-for-me/Cli-Proxy-API-Management-Center.git
+          git fetch upstream main
+
+          BEHIND=$(git rev-list --count HEAD..upstream/main)
+          echo "Commits behind upstream: $BEHIND"
+          if [ "$BEHIND" = "0" ]; then
+            echo "Fork đã ngang upstream, không cần sync."
+            exit 0
+          fi
+
+          git merge upstream/main --no-edit || {
+            echo "MERGE_FAILED=1" >> "$GITHUB_ENV"
+            git merge --abort
+          }
+
+          if [ "${MERGE_FAILED:-0}" = "1" ]; then
+            gh issue create \
+              --title "Upstream sync conflict ($(date -u +%Y-%m-%d))" \
+              --body "Auto-merge upstream/main vào fork thất bại do xung đột. Cần merge tay. Xem workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+              || echo "Không tạo được issue"
+            exit 0
+          fi
+
+          # upstream thêm/xóa key trong en.json -> đồng bộ cấu trúc vi.json
+          RESULT=$(node scripts/sync-vi-keys.mjs)
+          echo "sync-vi-keys result: $RESULT"
+          if ! git diff --quiet src/i18n/locales/vi.json; then
+            git add src/i18n/locales/vi.json
+            git commit -m "chore(i18n): sync vi.json structure with upstream en.json
+
+$RESULT (added/removed keys, tiếng Anh giữ tạm chờ dịch)
+
+Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
+          fi
+
+          git push origin main
