@@ -1028,7 +1028,8 @@
           "disable_cooling_desc": "Tắt toàn cục cửa sổ cooldown auth/model sau thất bại",
           "session_affinity": "Định tuyến Session Affinity",
           "ws_auth": "Xác thực WebSocket",
-          "ws_auth_desc": "Bật xác thực WebSocket (/v1/ws)"
+          "ws_auth_desc": "Bật xác thực WebSocket (/v1/ws)",
+          "proxy_url_sponsor_hint": "No suitable proxy?"
         },
         "quota": {
           "title": "Quota dự phòng",
