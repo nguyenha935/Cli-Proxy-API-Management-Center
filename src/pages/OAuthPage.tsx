@@ -13,6 +13,7 @@ import { getErrorMessage, isRecord } from '@/utils/helpers';
 import { notifyAuthFilesChanged } from '@/features/authFiles/authFilesEvents';
 import { KiroOAuthCard } from '@/features/kiro/KiroOAuthCard';
 import { getPluginTitle, resolvePluginAssetURL } from '@/features/plugins/pluginResources';
+import { getKimiAffiliateUrl } from '@/features/providers/kimi';
 import type { PluginListEntry } from '@/types';
 import styles from './OAuthPage.module.scss';
 import iconCodex from '@/assets/icons/codex.svg';
@@ -109,7 +110,6 @@ const PROVIDERS: BuiltInOAuthProviderCard[] = [
 const BUILTIN_PROVIDER_IDS = new Set<string>(PROVIDERS.map((provider) => provider.id));
 const CALLBACK_SUPPORTED = new Set<string>(['codex', 'anthropic', 'antigravity', 'xai']);
 const XAI_CALLBACK_URL = 'http://127.0.0.1:56121/callback';
-const KIMI_SIGN_UP_URL = 'https://www.kimi.com/code/?aff=cliproxyapi';
 const SUCCESS_RESET_DELAY_MS = 5000;
 const getProviderI18nPrefix = (provider: string) => provider.replace('-', '_');
 const getAuthKey = (provider: string, suffix: string) =>
@@ -241,7 +241,7 @@ const resolveCallbackUrl = (provider: string, input: string, state?: string): st
 };
 
 export function OAuthPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const apiBase = useAuthStore((state) => state.apiBase);
   const { showNotification } = useNotificationStore();
@@ -600,7 +600,13 @@ export function OAuthPage() {
           showKimiSignUp ? (
             <div className={styles.featuredActions}>
               <Button
-                onClick={() => window.open(KIMI_SIGN_UP_URL, '_blank', 'noopener,noreferrer')}
+                onClick={() =>
+                  window.open(
+                    getKimiAffiliateUrl(i18n.resolvedLanguage ?? i18n.language),
+                    '_blank',
+                    'noopener,noreferrer'
+                  )
+                }
               >
                 {t('auth_login.kimi_sign_up_button')}
               </Button>
