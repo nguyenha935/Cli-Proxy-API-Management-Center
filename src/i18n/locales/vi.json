@@ -932,7 +932,8 @@
           "title": "Nâng cao & Thử nghiệm",
           "description": "Giả mạo header, cache chữ ký, nguồn plugin và các cài đặt ít thay đổi khác",
           "plugins_title": "Plugin",
-          "signature_title": "Chữ ký Antigravity"
+          "signature_title": "Chữ ký Antigravity",
+          "antigravity_title": "Antigravity"
         },
         "server": {
           "host": "Địa chỉ Host",
@@ -1010,7 +1011,12 @@
           "antigravity_signature_cache": "Bật cache chữ ký Antigravity",
           "antigravity_signature_cache_desc": "Ưu tiên và xác thực chữ ký thinking-block đã cache",
           "antigravity_signature_strict": "Bỏ qua xác thực chữ ký nghiêm ngặt",
-          "antigravity_signature_strict_desc": "Chỉ áp dụng khi cache chữ ký bị tắt; xác thực toàn bộ cây protobuf Claude"
+          "antigravity_signature_strict_desc": "Chỉ áp dụng khi cache chữ ký bị tắt; xác thực toàn bộ cây protobuf Claude",
+          "antigravity_sensitive_words": "Sensitive Word Obfuscation",
+          "antigravity_sensitive_words_desc": "Insert zero-width characters into matching words in Antigravity system instructions to reduce exact keyword matching upstream",
+          "antigravity_sensitive_words_label": "Sensitive words (antigravity.sensitive-words)",
+          "antigravity_sensitive_words_placeholder": "proxy",
+          "antigravity_sensitive_words_hint": "One word or phrase per row. Matching is case-insensitive; empty entries are removed and entries shorter than 2 characters are ignored by the backend"
         },
         "headers": {
           "title": "Header mặc định",
@@ -1596,7 +1602,8 @@
         "openai": "Tương thích OpenAI",
         "gemini": "Gemini",
         "codexResponses": "Codex API (Responses)"
-      }
+      },
+      "kimiPromo": "New users get API credit worth 10% of their first successful top-up, up to ¥1000. Offer ends September 30."
     },
     "status": {
       "active": "Đang hoạt động",
