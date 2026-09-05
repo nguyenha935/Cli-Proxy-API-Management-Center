@@ -34,6 +34,7 @@ import {
   type ResolvedTheme,
 } from '@/features/authFiles/constants';
 import { deriveAuthFileIdentity } from '@/features/authFiles/identity';
+import { usePluginProviderLogo } from '@/features/plugins/pluginProviderLogos';
 import type { AuthFileStatusBarData } from '@/features/authFiles/hooks/useAuthFilesStatusBarCache';
 import { AuthFileQuotaSection } from '@/features/authFiles/components/AuthFileQuotaSection';
 import styles from './AuthFileCard.module.scss';
@@ -97,7 +98,9 @@ export function AuthFileCard(props: AuthFileCardProps) {
   const isManualRefreshing = manualRefreshing[file.name] === true;
   const typeColor = getTypeColor(providerKey, resolvedTheme);
   const typeLabel = getTypeLabel(t, providerKey);
-  const providerIcon = getAuthFileIcon(providerKey, resolvedTheme);
+  // A plugin provider has no bundled icon, so fall back to its plugin metadata.
+  const pluginProviderIcon = usePluginProviderLogo(providerKey);
+  const providerIcon = getAuthFileIcon(providerKey, resolvedTheme) ?? pluginProviderIcon;
   // 与 AI 提供商界面一致：Kimi 图标底座随主题切换颜色
   const useThemeSurfaceIcon = isThemeSurfaceIconProvider(providerKey);
 

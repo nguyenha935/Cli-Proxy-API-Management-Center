@@ -18,6 +18,7 @@ import {
   getTypeLabel,
   isThemeSurfaceIconProvider,
 } from '@/features/authFiles/constants';
+import { usePluginProviderLogo } from '@/features/plugins/pluginProviderLogos';
 import { bindQuotaClasses } from '../types';
 import { QUOTA_ADAPTERS, type QuotaCardState } from '../providers';
 import { isQuotaRefreshDisabled, type QuotaFileEntry } from '../logic';
@@ -63,7 +64,8 @@ export function QuotaCard(props: QuotaCardProps) {
 
   const status = quota?.status ?? 'idle';
   const loading = status === 'loading';
-  const iconSrc = getAuthFileIcon(entry.type, resolvedTheme);
+  const pluginProviderIcon = usePluginProviderLogo(entry.type);
+  const iconSrc = getAuthFileIcon(entry.type, resolvedTheme) ?? pluginProviderIcon;
   const typeLabel = getTypeLabel(t, entry.type);
   const errorMessage = resolveQuotaErrorMessage(
     t,

@@ -5,8 +5,10 @@ import {
   getThemeSurfaceIconBackground,
   getTypeLabel,
   isThemeSurfaceIconProvider,
+  normalizeProviderKey,
   type ResolvedTheme,
 } from '@/features/authFiles/constants';
+import { usePluginProviderLogos } from '@/features/plugins/pluginProviderLogos';
 import styles from './ProviderTabs.module.scss';
 
 export type ProviderTabsProps = {
@@ -23,13 +25,18 @@ export type ProviderTabsProps = {
  */
 export function ProviderTabs({ types, counts, active, resolvedTheme, onChange }: ProviderTabsProps) {
   const { t } = useTranslation();
+  // Plugin providers ship no bundled icon; their mark comes from plugin metadata.
+  const pluginLogos = usePluginProviderLogos();
 
   return (
     <div className={styles.tabs} role="group" aria-label={t('auth_files.filter_all')}>
       {types.map((type) => {
         const isActive = active === type;
         const label = type === 'all' ? t('auth_files.filter_all') : getTypeLabel(t, type);
-        const iconSrc = type === 'all' ? null : getAuthFileIcon(type, resolvedTheme);
+        const iconSrc =
+          type === 'all'
+            ? null
+            : (getAuthFileIcon(type, resolvedTheme) ?? pluginLogos[normalizeProviderKey(type)] ?? null);
 
         return (
           <button
