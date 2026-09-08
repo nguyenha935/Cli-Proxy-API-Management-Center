@@ -556,7 +556,9 @@
     "provider_required": "Vui lòng nhập provider trước",
     "upgrade_required": "Phiên bản CPA hiện tại không hỗ trợ vô hiệu hóa model OAuth. Vui lòng nâng cấp.",
     "upgrade_required_title": "Vui lòng nâng cấp CLI Proxy API",
-    "upgrade_required_desc": "Phiên bản máy chủ hiện tại không hỗ trợ lấy danh sách vô hiệu hóa model OAuth. Vui lòng nâng cấp lên phiên bản CPA (CLI Proxy API) mới nhất và thử lại."
+    "upgrade_required_desc": "Phiên bản máy chủ hiện tại không hỗ trợ lấy danh sách vô hiệu hóa model OAuth. Vui lòng nâng cấp lên phiên bản CPA (CLI Proxy API) mới nhất và thử lại.",
+    "editor_description": "Choose which models a provider exposes using individual selections or wildcard rules.",
+    "models_hint": "Expand the list to select models, or enter wildcard rules below."
   },
   "excluded_models": {
     "trigger_summary": "{{excluded}} bị loại trừ · {{available}} khả dụng",
@@ -650,7 +652,12 @@
     "provider_required": "Vui lòng nhập provider trước",
     "upgrade_required": "Tính năng này yêu cầu phiên bản CLI Proxy API (CPA) mới hơn. Vui lòng nâng cấp.",
     "upgrade_required_title": "Vui lòng nâng cấp CLI Proxy API",
-    "upgrade_required_desc": "Máy chủ hiện tại không hỗ trợ API bí danh model OAuth. Vui lòng nâng cấp lên phiên bản CLI Proxy API (CPA) mới nhất."
+    "upgrade_required_desc": "Máy chủ hiện tại không hỗ trợ API bí danh model OAuth. Vui lòng nâng cấp lên phiên bản CLI Proxy API (CPA) mới nhất.",
+    "editor_description": "Give provider models consistent names for use in your clients.",
+    "edit_title": "Edit model aliases for {{provider}}",
+    "mapping_hint": "Choose a source model, then enter the alias your clients will use.",
+    "mapping_row": "Alias mapping {{number}}",
+    "remove_mapping": "Delete alias mapping {{number}}"
   },
   "auth_login": {
     "recommended_provider_section": "Provider đề xuất",
