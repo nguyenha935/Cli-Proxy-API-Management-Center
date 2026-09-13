@@ -1073,7 +1073,8 @@
           "session_affinity": "Định tuyến Session Affinity",
           "ws_auth": "Xác thực WebSocket",
           "ws_auth_desc": "Bật xác thực WebSocket (/v1/ws)",
-          "proxy_url_sponsor_hint": "No suitable proxy?"
+          "proxy_url_sponsor_hint": "No suitable proxy?",
+          "max_retry_interval_hint": "Set to 0 or a negative integer to skip cooldown waits between retry rounds."
         },
         "quota": {
           "title": "Quota dự phòng",
@@ -1189,7 +1190,8 @@
         "integer_range_1_3600": "Nhập số nguyên từ 1 đến 3600",
         "payload_invalid_number": "Nhập số hợp lệ",
         "payload_invalid_boolean": "Chọn true hoặc false",
-        "payload_invalid_json": "Nhập JSON hợp lệ"
+        "payload_invalid_json": "Nhập JSON hợp lệ",
+        "integer": "Enter a whole number"
       },
       "common": {
         "edit": "Chỉnh sửa",
@@ -1449,7 +1451,12 @@
     "login_failed": "Đăng nhập thất bại",
     "commercial_mode_restart_required": "Đã đổi cài đặt chế độ thương mại. Vui lòng khởi động lại dịch vụ để có hiệu lực",
     "copy_failed": "Sao chép thất bại",
-    "link_copied": "Đã sao chép liên kết vào clipboard"
+    "link_copied": "Đã sao chép liên kết vào clipboard",
+    "region_label": "Notifications",
+    "type_success": "Success",
+    "type_info": "Information",
+    "type_warning": "Warning",
+    "type_error": "Error"
   },
   "language": {
     "switch": "Ngôn ngữ",
@@ -1510,15 +1517,11 @@
       "codex": "Codex",
       "xai": "xAI",
       "claude": "Claude",
-      "claudeApi": "ClaudeAPI",
       "vertex": "Vertex",
       "openaiCompatibility": "Tương thích OpenAI",
       "apikeyFun": "APIKEY.FUN",
-      "code0": "Code0",
       "fennoAI": "FennoAI",
       "qiniuCloud": "Qiniu Cloud",
-      "lmuAI": "LMU AI (Linhmou AI)",
-      "infistar": "Infistar",
       "kimi": "Kimi"
     },
     "table": {
