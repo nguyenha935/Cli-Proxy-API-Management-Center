@@ -67,6 +67,10 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           TAG="$RELEASE_TAG"
+          # --repo is required since this job adds an `upstream` remote: gh picks
+          # that one as the base repo and tries to publish into router-for-me,
+          # which answers 403.
           gh release create "$TAG" dist/management.html \
+            --repo "$GITHUB_REPOSITORY" \
             --title "Vi panel $TAG" \
             --notes "Bản build fork tiếng Việt của Management Center. Commit: ${{ github.sha }}. Server CLIProxyAPI tự kéo qua panel-github-repository."
