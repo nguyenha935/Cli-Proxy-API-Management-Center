@@ -13,6 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # git describe needs the tags; the default shallow clone has none.
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
@@ -25,8 +28,21 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
+      # Two different names, on purpose.
+      #
+      # RELEASE_TAG only has to be unique per push; the CLIProxyAPI updater
+      # looks for the newest release carrying a `management.html` asset and
+      # never reads the tag name.
+      #
+      # VERSION is what the UI shows, so it has to answer "which upstream am I
+      # on, and how far ahead is this fork". `git describe --match 'v[0-9]*'`
+      # skips our own `vi-*` tags and resolves against the upstream release
+      # tags, e.g. v1.24.1-27-g21dbbf5. Setting VERSION to the `vi-*` name was
+      # why the panel could only ever report its own build date.
       - name: Set release version
-        run: echo "VERSION=vi-$(date -u +%Y%m%d-%H%M%S)-${GITHUB_SHA::7}" >> "$GITHUB_ENV"
+        run: |
+          echo "RELEASE_TAG=vi-$(date -u +%Y%m%d-%H%M%S)-${GITHUB_SHA::7}" >> "$GITHUB_ENV"
+          echo "VERSION=$(git describe --tags --match 'v[0-9]*' --always)" >> "$GITHUB_ENV"
 
       - name: Build
         run: bun run build
@@ -40,7 +56,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          TAG="$VERSION"
+          TAG="$RELEASE_TAG"
           gh release create "$TAG" dist/management.html \
             --title "Vi panel $TAG" \
             --notes "Bản build fork tiếng Việt của Management Center. Commit: ${{ github.sha }}. Server CLIProxyAPI tự kéo qua panel-github-repository."

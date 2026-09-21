@@ -32,6 +32,15 @@ Use Bun; `package.json` pins `bun@1.3.14`, and CI uses Node.js 24. Keep dependen
 
 The production artifact is a single `dist/index.html` with JS/CSS and bundled assets inlined by `vite-plugin-singlefile`. The release workflow renames it to `management.html` for backend hosting; `vX.Y.Z` tags trigger releases.
 
+Version names follow one rule: the release tag and the version shown in the UI
+are separate. The tag (`vi-<utc>-<sha>`) only needs to be unique, because the
+CLIProxyAPI updater picks the newest release by its `management.html` asset and
+ignores the name. The UI version comes from `git describe --tags --match
+'v[0-9]*'`, which skips our own tags and resolves against the upstream release
+tags, so a panel reports something like `v1.24.1-27-g21dbbf5` and a reader can
+tell both which upstream it is built on and how far ahead the fork is. Do not
+point `VERSION` at a `vi-*` tag, and do not add fork tags shaped like `vX.Y.Z`.
+
 Preserve hash routing and single-file deployment. Changes to assets, imports, code splitting, or build configuration must not introduce required external build artifacts. Do not edit generated `dist/` files. App version is injected as `__APP_VERSION__` from `VERSION`, then git tags, then the package version, falling back to `dev`.
 
 ## API Contracts & State
