@@ -1161,7 +1161,7 @@
           "title": "Cấu hình mạng",
           "description": "Cài đặt proxy, thử lại và định tuyến",
           "proxy_url": "URL Proxy",
-          "proxy_url_sponsor_hint": "No suitable proxy?",
+          "proxy_url_sponsor_hint": "Chưa có proxy phù hợp?",
           "request_retry": "Số lần thử lại yêu cầu",
           "max_retry_credentials": "Số credential thử lại tối đa",
           "max_retry_credentials_hint": "Để trống nếu không muốn đặt. Đặt 0 để giữ hành vi cũ và thử mọi credential khả dụng.",
