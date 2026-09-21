@@ -28,6 +28,16 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
+      # The upstream tags are what VERSION resolves against, and a fork checkout
+      # does not carry them: measured on the first run of this job, describe
+      # landed on v1.22.2 (the newest upstream tag that had ever been pushed to
+      # the fork) and reported v1.22.2-119-gdf82c59 for a tree already merged up
+      # to v1.24.1. Fetch them before describing.
+      - name: Fetch upstream tags
+        run: |
+          git remote add upstream https://github.com/router-for-me/Cli-Proxy-API-Management-Center.git 2>/dev/null || true
+          git fetch --tags --quiet upstream
+
       # Two different names, on purpose.
       #
       # RELEASE_TAG only has to be unique per push; the CLIProxyAPI updater
