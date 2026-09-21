@@ -33,6 +33,43 @@ export const resolvePluginAssetURL = (value: string, apiBase: string) => {
   return base ? `${base}${trimmed}` : trimmed;
 };
 
+export interface PluginResourceFrameOptions {
+  theme?: string;
+  lang?: string;
+}
+
+/**
+ * The URL a plugin page is framed at.
+ *
+ * Theme and language ride along as query parameters so a plugin page can match
+ * the panel it is embedded in. The plugin decides whether to honour them; a
+ * plugin that ignores them renders exactly as before. Any query already present
+ * in the registered menu path is preserved — for CPA that path is the full
+ * "/v0/resource/plugins/<id>/..." route, which may itself carry parameters.
+ */
+export const buildPluginResourceFrameURL = (
+  path: string,
+  apiBase: string,
+  options: PluginResourceFrameOptions = {}
+): string => {
+  const resolved = resolvePluginAssetURL(path, apiBase);
+  if (!resolved) return '';
+
+  const params = new URLSearchParams();
+  const theme = options.theme?.trim();
+  const lang = options.lang?.trim();
+  if (theme) params.set('theme', theme);
+  if (lang) params.set('lang', lang);
+
+  const query = params.toString();
+  if (!query) return resolved;
+
+  const [withoutFragment, fragment] = resolved.split('#', 2);
+  const separator = withoutFragment.includes('?') ? '&' : '?';
+  const merged = `${withoutFragment}${separator}${query}`;
+  return fragment === undefined ? merged : `${merged}#${fragment}`;
+};
+
 // Registry entries usually carry an "owner/repo" slug rather than a full URL.
 export const buildRepositoryURL = (repository: string) => {
   const trimmed = repository.trim();

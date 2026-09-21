@@ -4,13 +4,13 @@ import { useTranslation } from 'react-i18next';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { useHeaderRefresh } from '@/hooks/useHeaderRefresh';
 import { pluginsApi } from '@/services/api';
-import { useAuthStore } from '@/stores';
+import { useAuthStore, useThemeStore } from '@/stores';
 import { getErrorMessage, isRecord } from '@/utils/helpers';
 import type { PluginListResponse } from '@/types';
 import {
+  buildPluginResourceFrameURL,
   collectPluginResourceEntries,
   PLUGIN_RESOURCES_REFRESH_EVENT,
-  resolvePluginAssetURL,
 } from './pluginResources';
 import styles from './PluginResourcePage.module.scss';
 
@@ -30,10 +30,11 @@ const parseMenuIndex = (value = '') => {
 };
 
 export function PluginResourcePage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const params = useParams<{ pluginId: string; menuIndex: string }>();
   const connectionStatus = useAuthStore((state) => state.connectionStatus);
   const apiBase = useAuthStore((state) => state.apiBase);
+  const resolvedTheme = useThemeStore((state) => state.resolvedTheme);
 
   const [data, setData] = useState<PluginListResponse | null>(null);
   const [loading, setLoading] = useState(true);
@@ -85,7 +86,18 @@ export function PluginResourcePage() {
     return entries.find((entry) => entry.pluginID === pluginID && entry.menuIndex === menuIndex);
   }, [data?.plugins, menuIndex, pluginID]);
 
-  const iframeSrc = resource ? resolvePluginAssetURL(resource.menu.path, apiBase) : '';
+  // Plugin pages are third-party documents: they are framed sandboxed, and the
+  // panel only tells them which theme and language it is currently using.
+  const iframeSrc = useMemo(
+    () =>
+      resource
+        ? buildPluginResourceFrameURL(resource.menu.path, apiBase, {
+            theme: resolvedTheme,
+            lang: i18n.resolvedLanguage,
+          })
+        : '',
+    [apiBase, i18n.resolvedLanguage, resolvedTheme, resource]
+  );
 
   return (
     <div className={styles.page}>
@@ -117,6 +129,7 @@ export function PluginResourcePage() {
           src={iframeSrc}
           title={resource.label}
           referrerPolicy="no-referrer"
+          sandbox="allow-scripts"
           allow="clipboard-read; clipboard-write"
         />
       )}
