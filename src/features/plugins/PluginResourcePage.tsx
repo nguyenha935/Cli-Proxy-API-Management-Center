@@ -86,8 +86,9 @@ export function PluginResourcePage() {
     return entries.find((entry) => entry.pluginID === pluginID && entry.menuIndex === menuIndex);
   }, [data?.plugins, menuIndex, pluginID]);
 
-  // Plugin pages are third-party documents: they are framed sandboxed, and the
-  // panel only tells them which theme and language it is currently using.
+  // Plugin pages are FIRST-party documents on this deployment: the backend loads
+  // them from its own plugin directory and serves them from the panel's origin.
+  // The panel tells them the current theme and language through the URL.
   const iframeSrc = useMemo(
     () =>
       resource
@@ -129,7 +130,6 @@ export function PluginResourcePage() {
           src={iframeSrc}
           title={resource.label}
           referrerPolicy="no-referrer"
-          sandbox="allow-scripts"
           allow="clipboard-read; clipboard-write"
         />
       )}

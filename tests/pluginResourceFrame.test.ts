@@ -62,8 +62,15 @@ describe('plugin page frame contract', () => {
     'utf8'
   );
 
-  it('frames third-party plugin documents sandboxed', () => {
-    expect(source).toContain('sandbox="allow-scripts"');
+  // Plugin pages read the management key from the panel's own storage, so the
+  // frame must stay on the panel origin. A `sandbox` without `allow-same-origin`
+  // puts the frame in an opaque origin, where localStorage and window.parent are
+  // both unreachable, and every such plugin falls back to asking for the key by
+  // hand on each load. Measured on this deployment: 2 of the 4 installed plugins
+  // (manager-key-pro, model-router) read `cli-proxy-auth` / `managementKey` from
+  // that storage, and both went blind the moment the attribute was added.
+  it('keeps plugin frames on the panel origin', () => {
+    expect(source).not.toContain('sandbox=');
   });
 
   it('builds the frame URL through the helper, with the panel theme and language', () => {
