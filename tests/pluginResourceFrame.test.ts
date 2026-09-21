@@ -1,60 +1,5 @@
 import { describe, expect, it } from 'bun:test';
 import { readFileSync } from 'node:fs';
-import { buildPluginResourceFrameURL } from '@/features/plugins/pluginResources';
-
-describe('buildPluginResourceFrameURL', () => {
-  it('resolves a registered resource path against the API base', () => {
-    expect(
-      buildPluginResourceFrameURL('/v0/resource/plugins/kiro/usage/abc', 'https://api.example.com')
-    ).toBe('https://api.example.com/v0/resource/plugins/kiro/usage/abc');
-  });
-
-  it('carries the panel theme and language to the plugin page', () => {
-    expect(
-      buildPluginResourceFrameURL('/v0/resource/plugins/kiro/usage/abc', 'https://api.example.com', {
-        theme: 'light',
-        lang: 'vi',
-      })
-    ).toBe('https://api.example.com/v0/resource/plugins/kiro/usage/abc?theme=light&lang=vi');
-  });
-
-  it('appends to a path that already carries a query', () => {
-    expect(
-      buildPluginResourceFrameURL('/v0/resource/plugins/x/page?tab=usage', 'https://api.example.com', {
-        theme: 'dark',
-      })
-    ).toBe('https://api.example.com/v0/resource/plugins/x/page?tab=usage&theme=dark');
-  });
-
-  it('keeps the fragment after the appended query', () => {
-    expect(
-      buildPluginResourceFrameURL('/v0/resource/plugins/x/page#top', 'https://api.example.com', {
-        lang: 'en',
-      })
-    ).toBe('https://api.example.com/v0/resource/plugins/x/page?lang=en#top');
-  });
-
-  it('leaves the URL untouched when the panel has nothing to declare', () => {
-    expect(
-      buildPluginResourceFrameURL('/v0/resource/plugins/x/page', 'https://api.example.com', {
-        theme: '  ',
-        lang: '',
-      })
-    ).toBe('https://api.example.com/v0/resource/plugins/x/page');
-  });
-
-  it('encodes values instead of splicing them into the query', () => {
-    expect(
-      buildPluginResourceFrameURL('/v0/resource/plugins/x/page', 'https://api.example.com', {
-        theme: 'dark&admin=1',
-      })
-    ).toBe('https://api.example.com/v0/resource/plugins/x/page?theme=dark%26admin%3D1');
-  });
-
-  it('returns nothing for an empty path so the caller can render its own state', () => {
-    expect(buildPluginResourceFrameURL('', 'https://api.example.com', { theme: 'dark' })).toBe('');
-  });
-});
 
 describe('plugin page frame contract', () => {
   const source = readFileSync(
@@ -65,17 +10,22 @@ describe('plugin page frame contract', () => {
   // Plugin pages read the management key from the panel's own storage, so the
   // frame must stay on the panel origin. A `sandbox` without `allow-same-origin`
   // puts the frame in an opaque origin, where localStorage and window.parent are
-  // both unreachable, and every such plugin falls back to asking for the key by
-  // hand on each load. Measured on this deployment: 2 of the 4 installed plugins
-  // (manager-key-pro, model-router) read `cli-proxy-auth` / `managementKey` from
-  // that storage, and both went blind the moment the attribute was added.
+  // both unreachable, and a plugin that reads the key there is left asking for
+  // it by hand on every load. Measured on this deployment: 2 of the 4 installed
+  // plugins (manager-key-pro, model-router) read `cli-proxy-auth` /
+  // `managementKey` from that storage.
   it('keeps plugin frames on the panel origin', () => {
     expect(source).not.toContain('sandbox=');
   });
 
-  it('builds the frame URL through the helper, with the panel theme and language', () => {
-    expect(source).toContain('buildPluginResourceFrameURL(resource.menu.path, apiBase, {');
-    expect(source).toContain('theme: resolvedTheme,');
-    expect(source).toContain('lang: i18n.resolvedLanguage,');
+  // The panel does not hand the frame anything on the URL. It used to, through
+  // a `buildPluginResourceFrameURL` helper carrying theme and language, but that
+  // was unfinished work that reached main by accident, and measuring it found
+  // one reader for half of it: manager-key-pro reads `theme`, nobody reads
+  // `lang`, and manager-key-pro already followed the panel theme through
+  // `window.parent` because the frame is same-origin. Reverted to upstream.
+  it('resolves the frame URL the way upstream does', () => {
+    expect(source).toContain('resolvePluginAssetURL(resource.menu.path, apiBase)');
+    expect(source).not.toContain('buildPluginResourceFrameURL');
   });
 });
