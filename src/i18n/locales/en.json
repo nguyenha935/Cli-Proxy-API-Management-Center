@@ -322,6 +322,7 @@
     "filter_qwen": "Qwen",
     "filter_gemini": "Gemini",
     "filter_kimi": "Kimi",
+    "filter_plugin": "Plugins",
     "filter_aistudio": "AIStudio",
     "filter_claude": "Claude",
     "filter_codex": "Codex",
@@ -551,6 +552,18 @@
     "weekly": "Weekly quota",
     "unknown": "Unknown",
     "remaining": "{{percent}}% remaining"
+  },
+  "plugin_quota": {
+    "title": "Plugin Quota",
+    "empty_title": "No plugin quota",
+    "empty_desc": "Credentials whose plugin reports quota appear here.",
+    "idle": "Click here to refresh quota",
+    "loading": "Loading quota...",
+    "load_failed": "Failed to load quota: {{message}}",
+    "missing_auth_index": "Auth file missing auth_index",
+    "empty_data": "No quota data available",
+    "plan_label": "Plan",
+    "remaining_percent": "{{percent}}% remaining"
   },
   "kimi_quota": {
     "title": "Kimi Quota",

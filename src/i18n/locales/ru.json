@@ -325,6 +325,7 @@
     "filter_qwen": "Qwen",
     "filter_gemini": "Gemini",
     "filter_kimi": "Kimi",
+    "filter_plugin": "Плагины",
     "filter_aistudio": "AIStudio",
     "filter_claude": "Claude",
     "filter_codex": "Codex",
@@ -554,6 +555,18 @@
     "weekly": "Недельная квота",
     "unknown": "Неизвестно",
     "remaining": "Осталось {{percent}}%"
+  },
+  "plugin_quota": {
+    "title": "Квота плагина",
+    "empty_title": "Нет квоты плагинов",
+    "empty_desc": "Здесь появятся учётные данные, для которых плагин сообщает квоту.",
+    "idle": "Нажмите, чтобы обновить квоту",
+    "loading": "Загрузка квоты...",
+    "load_failed": "Не удалось загрузить квоту: {{message}}",
+    "missing_auth_index": "У файла авторизации нет auth_index",
+    "empty_data": "Нет данных о квоте",
+    "plan_label": "Тариф",
+    "remaining_percent": "Осталось {{percent}}%"
   },
   "kimi_quota": {
     "title": "Квота Kimi",

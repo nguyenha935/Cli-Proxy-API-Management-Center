@@ -9,6 +9,8 @@ export const QUOTA_TAB_ORDER: readonly QuotaProviderType[] = [
   'kimi',
   'devin',
   'meta',
+  // Every provider whose quota a CLIProxyAPI plugin serves.
+  'plugin',
 ];
 
 export type QuotaTabId = 'all' | QuotaProviderType;

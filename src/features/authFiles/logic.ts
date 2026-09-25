@@ -5,6 +5,7 @@
 
 import type { AuthFileItem } from '@/types';
 import { resolveAuthProvider } from '@/utils/quota';
+import { isPluginQuotaFile } from '@/features/quota/providers/plugin/data';
 import {
   QUOTA_PROVIDER_TYPES,
   normalizeProviderKey,
@@ -31,10 +32,9 @@ export const resolveAuthFileQuotaType = (
   if (!filter) return null;
 
   const provider = resolveAuthProvider(file);
-  if (!QUOTA_PROVIDER_TYPES.has(provider as QuotaProviderType)) return null;
   if (filter !== 'all' && provider !== filter) return null;
-
-  return provider as QuotaProviderType;
+  if (QUOTA_PROVIDER_TYPES.has(provider as QuotaProviderType)) return provider as QuotaProviderType;
+  return isPluginQuotaFile(file) ? 'plugin' : null;
 };
 
 /**

@@ -320,6 +320,7 @@
     "filter_qwen": "Qwen",
     "filter_gemini": "Gemini",
     "filter_kimi": "Kimi",
+    "filter_plugin": "外掛",
     "filter_aistudio": "AIStudio",
     "filter_claude": "Claude",
     "filter_codex": "Codex",
@@ -549,6 +550,18 @@
     "weekly": "每週額度",
     "unknown": "未知",
     "remaining": "剩餘 {{percent}}%"
+  },
+  "plugin_quota": {
+    "title": "外掛額度",
+    "empty_title": "暫無外掛額度",
+    "empty_desc": "外掛回報額度的憑證會顯示在這裡。",
+    "idle": "點擊此處重新整理額度",
+    "loading": "正在載入額度...",
+    "load_failed": "額度載入失敗：{{message}}",
+    "missing_auth_index": "認證檔案缺少 auth_index",
+    "empty_data": "暫無額度資料",
+    "plan_label": "方案",
+    "remaining_percent": "剩餘 {{percent}}%"
   },
   "kimi_quota": {
     "title": "Kimi 配額",

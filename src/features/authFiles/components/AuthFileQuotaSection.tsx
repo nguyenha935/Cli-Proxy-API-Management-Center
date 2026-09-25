@@ -51,6 +51,7 @@ export function AuthFileQuotaSection(props: AuthFileQuotaSectionProps) {
     if (quotaType === 'kimi') return state.kimiQuota[cacheKey] as QuotaCardState | undefined;
     if (quotaType === 'meta') return state.metaQuota[cacheKey] as QuotaCardState | undefined;
     if (quotaType === 'xai') return state.xaiQuota[cacheKey] as QuotaCardState | undefined;
+    if (quotaType === 'plugin') return state.pluginQuota[cacheKey] as QuotaCardState | undefined;
     return assertNever(quotaType);
   });
   const quota = storedQuota;
@@ -177,6 +178,8 @@ export function AuthFileQuotaSection(props: AuthFileQuotaSectionProps) {
         {t('codex_quota.reset_button')}
       </Button>
     ) : undefined;
+  // Providers without an automatic refresh get a button once quota is shown.
+  const showRefreshAction = quotaType === 'devin' || quotaType === 'plugin';
   const quotaErrorMessage = resolveQuotaErrorMessage(
     t,
     quota?.errorStatus,
@@ -207,10 +210,10 @@ export function AuthFileQuotaSection(props: AuthFileQuotaSectionProps) {
       ) : (
         <div className={styles.quotaMessage}>{t(`${adapter.i18nPrefix}.idle`)}</div>
       )}
-      {quotaStatus !== 'idle' && (resetQuotaAction || quotaType === 'devin') && (
+      {quotaStatus !== 'idle' && (resetQuotaAction || showRefreshAction) && (
         <div className={styles.quotaCardActions}>
           {resetQuotaAction}
-          {quotaType === 'devin' && (
+          {showRefreshAction && (
             <Button
               type="button"
               variant="secondary"

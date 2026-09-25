@@ -322,6 +322,7 @@
     "filter_qwen": "Qwen",
     "filter_gemini": "Gemini",
     "filter_kimi": "Kimi",
+    "filter_plugin": "Plugin",
     "filter_aistudio": "AIStudio",
     "filter_claude": "Claude",
     "filter_codex": "Codex",
@@ -551,6 +552,18 @@
     "weekly": "Hạn mức tuần",
     "unknown": "Không rõ",
     "remaining": "Còn {{percent}}%"
+  },
+  "plugin_quota": {
+    "title": "Quota plugin",
+    "empty_title": "Không có quota từ plugin",
+    "empty_desc": "Credential có plugin báo quota sẽ hiện ở đây.",
+    "idle": "Nhấn vào đây để làm mới quota",
+    "loading": "Đang tải quota...",
+    "load_failed": "Không thể tải quota: {{message}}",
+    "missing_auth_index": "File xác thực thiếu auth_index",
+    "empty_data": "Chưa có dữ liệu quota",
+    "plan_label": "Gói",
+    "remaining_percent": "Còn lại {{percent}}%"
   },
   "kimi_quota": {
     "title": "Quota Kimi",

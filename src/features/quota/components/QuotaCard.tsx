@@ -11,7 +11,7 @@ import { useState, type CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IconRefreshCw } from '@/components/ui/icons';
 import type { ResolvedTheme } from '@/types';
-import { resolveQuotaErrorMessage } from '@/utils/quota';
+import { resolveAuthProvider, resolveQuotaErrorMessage } from '@/utils/quota';
 import { getQuotaDisplayName } from '@/utils/quota/identity';
 import {
   getAuthFileIcon,
@@ -66,9 +66,11 @@ export function QuotaCard(props: QuotaCardProps) {
 
   const status = quota?.status ?? 'idle';
   const loading = status === 'loading';
-  const pluginProviderIcon = usePluginProviderLogo(entry.type);
-  const iconSrc = getAuthFileIcon(entry.type, resolvedTheme) ?? pluginProviderIcon;
-  const typeLabel = getTypeLabel(t, entry.type);
+  // A plugin card is branded by the credential's own provider, not by 'plugin'.
+  const brandType = entry.type === 'plugin' ? resolveAuthProvider(file) : entry.type;
+  const pluginProviderIcon = usePluginProviderLogo(brandType);
+  const iconSrc = getAuthFileIcon(brandType, resolvedTheme) ?? pluginProviderIcon;
+  const typeLabel = getTypeLabel(t, brandType);
   const errorMessage = resolveQuotaErrorMessage(
     t,
     quota?.errorStatus,
@@ -90,7 +92,7 @@ export function QuotaCard(props: QuotaCardProps) {
           className={styles.iconWrap}
           title={typeLabel}
           style={
-            isThemeSurfaceIconProvider(entry.type)
+            isThemeSurfaceIconProvider(brandType)
               ? { background: getThemeSurfaceIconBackground(resolvedTheme) }
               : undefined
           }

@@ -443,3 +443,52 @@ export interface XaiQuotaState {
   error?: string;
   errorStatus?: number;
 }
+
+// Plugin quota: CLIProxyAPI's normalized QuotaFetchResponse
+// (POST /v0/management/quota/fetch), served by any plugin that declares a
+// quota provider. Labels arrive from the plugin as display text.
+export interface PluginQuotaSubscription {
+  plan: string | null;
+  tierName: string | null;
+  tierId: string | null;
+}
+
+export interface PluginQuotaBucket {
+  id: string;
+  label: string;
+  remainingFraction: number;
+  resetTime?: string;
+  /** Reset instant in epoch ms, parsed from `resetTime`. */
+  resetAtMs?: number | null;
+  description?: string;
+}
+
+export interface PluginQuotaGroup {
+  id: string;
+  label: string;
+  buckets: PluginQuotaBucket[];
+}
+
+export interface PluginQuotaMetric {
+  key: string;
+  label: string;
+  value: number;
+  unit?: string;
+  /** 'currency' only when `currency` is a three-letter code. */
+  format: 'number' | 'currency';
+  currency?: string;
+}
+
+export interface PluginQuotaData {
+  subscription: PluginQuotaSubscription | null;
+  groups: PluginQuotaGroup[];
+  summary: PluginQuotaMetric[];
+  serverTimeOffsetMs: number | null;
+}
+
+export interface PluginQuotaState extends Partial<PluginQuotaData> {
+  status: 'idle' | 'loading' | 'success' | 'error';
+  groups: PluginQuotaGroup[];
+  error?: string;
+  errorStatus?: number;
+}

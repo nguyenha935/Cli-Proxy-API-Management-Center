@@ -10,6 +10,8 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { copyToClipboard } from '@/utils/clipboard';
 import { getQuotaCacheKey } from '@/utils/quota/identity';
+import { resolveAuthProvider } from '@/utils/quota';
+import { isPluginQuotaFile } from '@/features/quota/providers/plugin/data';
 import {
   QUOTA_PROVIDER_TYPES,
   clampCardPageSize,
@@ -185,8 +187,19 @@ export function AuthFilesPage() {
   )
     ? (normalizedFilter as QuotaProviderType)
     : null;
+  // A plugin provider has no built-in quota type; its tab shows quota when the
+  // server marks its files as served by a plugin quota provider.
+  const pluginQuotaFilter = useMemo(
+    () =>
+      files.some(
+        (file) => resolveAuthProvider(file) === normalizedFilter && isPluginQuotaFile(file)
+      )
+        ? normalizedFilter
+        : null,
+    [files, normalizedFilter]
+  );
   const activeQuotaFilter: AuthFileQuotaFilter =
-    normalizedFilter === 'all' ? 'all' : quotaFilterType;
+    normalizedFilter === 'all' ? 'all' : (quotaFilterType ?? pluginQuotaFilter);
   const pageSize = compactMode ? pageSizeByMode.compact : pageSizeByMode.regular;
   const problemOnly = statusFilterMode === 'problem';
   const disabledOnly = statusFilterMode === 'disabled';

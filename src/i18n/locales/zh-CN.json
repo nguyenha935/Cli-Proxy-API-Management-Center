@@ -320,6 +320,7 @@
     "filter_qwen": "Qwen",
     "filter_gemini": "Gemini",
     "filter_kimi": "Kimi",
+    "filter_plugin": "插件",
     "filter_aistudio": "AIStudio",
     "filter_claude": "Claude",
     "filter_codex": "Codex",
@@ -549,6 +550,18 @@
     "weekly": "每周额度",
     "unknown": "未知",
     "remaining": "剩余 {{percent}}%"
+  },
+  "plugin_quota": {
+    "title": "插件额度",
+    "empty_title": "暂无插件额度",
+    "empty_desc": "插件上报额度的凭证会显示在这里。",
+    "idle": "点击此处刷新额度",
+    "loading": "正在加载额度...",
+    "load_failed": "额度加载失败：{{message}}",
+    "missing_auth_index": "认证文件缺少 auth_index",
+    "empty_data": "暂无额度数据",
+    "plan_label": "套餐",
+    "remaining_percent": "剩余 {{percent}}%"
   },
   "kimi_quota": {
     "title": "Kimi 额度",
