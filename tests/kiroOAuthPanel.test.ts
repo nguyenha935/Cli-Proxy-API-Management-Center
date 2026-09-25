@@ -54,3 +54,27 @@ describe('Kiro OAuth flat panel integration', () => {
     expect(source).toContain('window.setTimeout(poll, 3000)');
   });
 });
+
+describe('Kiro authorization link', () => {
+  const source = readFileSync(
+    new URL('../src/features/kiro/KiroOAuthCard.tsx', import.meta.url),
+    'utf8'
+  );
+
+  test('the AWS link can be copied as well as opened, like the other providers', () => {
+    expect(source).toContain('copyToClipboard(text)');
+    expect(source).toContain('copyText(authorizationURL)');
+    expect(source).toContain('auth_login.kiro_copy_link');
+    expect(source).toContain('copyText(userCode)');
+  });
+
+  test('every locale names the copy button', () => {
+    for (const locale of ['en', 'vi', 'zh-CN', 'zh-TW', 'ru']) {
+      const messages = JSON.parse(
+        readFileSync(new URL(`../src/i18n/locales/${locale}.json`, import.meta.url), 'utf8')
+      );
+      expect(typeof messages.auth_login.kiro_copy_link).toBe('string');
+      expect(messages.auth_login.kiro_copy_link.trim().length).toBeGreaterThan(0);
+    }
+  });
+});

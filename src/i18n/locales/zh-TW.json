@@ -866,6 +866,7 @@
     "kiro_add": "新增帳戶",
     "kiro_user_code": "裝置代碼",
     "kiro_open_aws": "開啟 AWS 授權頁面",
+    "kiro_copy_link": "複製連結",
     "kiro_waiting": "等待在 AWS 上完成授權...",
     "kiro_processing": "正在驗證並儲存帳戶...",
     "kiro_success": "Kiro 帳戶新增成功。",

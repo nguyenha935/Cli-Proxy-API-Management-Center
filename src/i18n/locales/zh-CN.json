@@ -866,6 +866,7 @@
     "kiro_add": "添加账户",
     "kiro_user_code": "设备代码",
     "kiro_open_aws": "打开 AWS 授权页面",
+    "kiro_copy_link": "复制链接",
     "kiro_waiting": "等待在 AWS 上完成授权...",
     "kiro_processing": "正在验证并保存账户...",
     "kiro_success": "Kiro 账户添加成功。",

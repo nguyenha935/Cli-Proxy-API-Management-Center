@@ -868,6 +868,7 @@
     "kiro_add": "Thêm tài khoản",
     "kiro_user_code": "Mã thiết bị",
     "kiro_open_aws": "Mở trang xác thực AWS",
+    "kiro_copy_link": "Sao chép liên kết",
     "kiro_waiting": "Đang chờ Cậu xác thực trên AWS...",
     "kiro_processing": "Đang kiểm tra và lưu tài khoản...",
     "kiro_success": "Đã thêm tài khoản Kiro thành công.",

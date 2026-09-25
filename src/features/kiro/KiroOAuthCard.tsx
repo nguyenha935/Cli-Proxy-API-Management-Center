@@ -8,6 +8,7 @@ import { IconPlug } from '@/components/ui/icons';
 import { notifyAuthFilesChanged } from '@/features/authFiles/authFilesEvents';
 import { kiroApi, oauthApi, type KiroAuthMethod, type KiroConnectRequest } from '@/services/api';
 import { useNotificationStore } from '@/stores';
+import { copyToClipboard } from '@/utils/clipboard';
 import { getErrorMessage } from '@/utils/helpers';
 import styles from './KiroOAuthCard.module.scss';
 
@@ -153,6 +154,17 @@ export function KiroOAuthCard({ title, icon }: KiroOAuthCardProps) {
       setStatus('error');
       setError(getErrorMessage(connectError));
     }
+  };
+
+  // Same behaviour as the other providers on the OAuth page: the AWS link may
+  // have to be opened in another browser or on another device, so it can be
+  // copied as well as opened.
+  const copyText = async (text: string) => {
+    const copied = await copyToClipboard(text);
+    showNotification(
+      t(copied ? 'notification.link_copied' : 'notification.copy_failed'),
+      copied ? 'success' : 'error'
+    );
   };
 
   const chooseMethod = (next: KiroAuthMethod) => {
@@ -306,6 +318,7 @@ export function KiroOAuthCard({ title, icon }: KiroOAuthCardProps) {
 
             {authorizationURL && (
               <div className={styles.authorization}>
+                <p className={styles.authorizationURL}>{authorizationURL}</p>
                 {userCode && (
                   <p>
                     {t('auth_login.kiro_user_code')}: <strong>{userCode}</strong>
@@ -316,6 +329,14 @@ export function KiroOAuthCard({ title, icon }: KiroOAuthCardProps) {
                 >
                   {t('auth_login.kiro_open_aws')}
                 </Button>
+                <Button variant="secondary" onClick={() => copyText(authorizationURL)}>
+                  {t('auth_login.kiro_copy_link')}
+                </Button>
+                {userCode && (
+                  <Button variant="secondary" onClick={() => copyText(userCode)}>
+                    {t('auth_login.device_code_copy')}
+                  </Button>
+                )}
                 <span className="status-badge">{t('auth_login.kiro_waiting')}</span>
               </div>
             )}

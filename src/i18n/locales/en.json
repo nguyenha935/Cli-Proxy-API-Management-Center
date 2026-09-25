@@ -868,6 +868,7 @@
     "kiro_add": "Add account",
     "kiro_user_code": "Device code",
     "kiro_open_aws": "Open AWS authorization",
+    "kiro_copy_link": "Copy link",
     "kiro_waiting": "Waiting for authorization on AWS...",
     "kiro_processing": "Validating and saving the account...",
     "kiro_success": "Kiro account added successfully.",

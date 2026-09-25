@@ -132,6 +132,15 @@
     margin: 0;
     color: var(--text-primary);
   }
+
+  // The AWS device URL has no spaces, so it breaks anywhere rather than
+  // widening the card past a narrow screen.
+  .authorizationURL {
+    color: var(--text-secondary);
+    font-family: monospace;
+    font-size: 12px;
+    overflow-wrap: anywhere;
+  }
 }
 
 @include mobile {
